@@ -92,3 +92,15 @@ response = r.json()
 print(type(r.text))
 print(r.json())
 
+# 忽略未经核实证书
+import urllib
+from urllib import parse
+from urllib import request
+import ssl
+
+context = ssl._create_unverified_context()  # 忽略未经核实的SSL证书认证
+https_url = 'https://www.12306.cn/mormhweb/'  # url 作为Request()方法的参数，构造并返回一个Request对象
+request = urllib.request.Request(https_url)  # Request对象作为urlopen()方法的参数，发送给服务器并接收响应
+response = urllib.request.urlopen(request, context=context)  # 在urlopen()方法里 指明添加 context 参数
+html = response.read().decode('utf-8')
+print(html)
