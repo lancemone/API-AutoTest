@@ -41,11 +41,52 @@ http://httpbin.org/
 # 此处暂时先讨论http请求，https请求需要证书，后面介绍
 my_url = "http://127.0.0.1:8000"
 r = requests.get(my_url)
-#response = r.json()
 print(type(r.text))
 print(r.text)
 
+host = "http://httpbin.org/"
+endpoint = "get"
+url_01 = ''.join([host, endpoint])
+r_01 = requests.get(url_01)
+response = r_01.json()
+print(response)
+print(r_01.text)
 
+# 带参数的get
+params = {"show_env": "1"}
+r_02 = requests.get(url=url_01, params=params)
+print(r_02.url)
+print(r_02.text)
 
+# 带header的get请求
+header = {"User-Agent": "test request headers"}
+r_03 = requests.get(url=url_01, headers=header)
+print(r_03.headers)
+print(r_03.status_code)
 
+# 同时带有参数和header
+r_04 = requests.get(url=url_01, headers=header, params=params)
 
+# post方法
+
+# 带数据的post
+endpoint2 = "post"
+url_11 = ''.join([host, endpoint2])
+datas = {'key1': 'value1', 'key2': 'value2'}
+print(requests.post(url_11, data=datas).text)
+
+# 带header的post
+print(requests.post(url_11, headers=header))
+# print(requests.post(url_11, headers=header).status_code)
+
+# 带json的post
+data_json = {
+    "sites": [
+        {"name": "test", "url": "www.test.com"},
+        {"name": "google", "url": "www.google.com"},
+        {"name": "weibo", "url": "www.weibo.com"}
+    ]
+}
+
+print(requests.post(url_11, json=data_json).json())
+print(requests.post(url_11, data=json.dumps(data_json)))

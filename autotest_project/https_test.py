@@ -104,3 +104,4 @@ request = urllib.request.Request(https_url)  # Request对象作为urlopen()方�
 response = urllib.request.urlopen(request, context=context)  # 在urlopen()方法里 指明添加 context 参数
 html = response.read().decode('utf-8')
 print(html)
+

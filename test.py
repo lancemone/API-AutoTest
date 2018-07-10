@@ -1,5 +1,19 @@
 import requests
+import json
 
-r = requests.get(
-    url='https://smart.sqbj.com/pro_app_api/tenant/loginName?filter_name=login_name&filter_params=13273522511')
-print(r.json())
+host = 'http://httpbin.org/'
+endpoint2 = "post"
+header = {"User-Agent": "test request headers"}
+url_11 = ''.join([host, endpoint2])
+datas = {'key1': 'value1', 'key2': 'value2'}
+
+data_json = {
+    "sites": [
+        {"name": "test", "url": "www.test.com"},
+        {"name": "google", "url": "www.google.com"},
+        {"name": "weibo", "url": "www.weibo.com"}
+    ]
+}
+
+print(requests.post(url_11, json=data_json).json())
+print(requests.post(url_11, data=json.dumps(data_json)))
