@@ -1,19 +1,9 @@
 import requests
-import json
 
-host = 'http://httpbin.org/'
-endpoint2 = "post"
-header = {"User-Agent": "test request headers"}
-url_11 = ''.join([host, endpoint2])
-datas = {'key1': 'value1', 'key2': 'value2'}
-
-data_json = {
-    "sites": [
-        {"name": "test", "url": "www.test.com"},
-        {"name": "google", "url": "www.google.com"},
-        {"name": "weibo", "url": "www.weibo.com"}
-    ]
-}
-
-print(requests.post(url_11, json=data_json).json())
-print(requests.post(url_11, data=json.dumps(data_json)))
+url_c = "https://www.baidu.com/"
+r_c = requests.get(url_c)
+# 将RequestsCookiesJar转换成字典
+ck = requests.utils.dict_from_cookiejar(r_c.cookies)
+s = requests.session()
+ck.set('ck-name', 'ck-value', path='/path/cookies', domain='.test.com')
+s.cookies.update(ck)

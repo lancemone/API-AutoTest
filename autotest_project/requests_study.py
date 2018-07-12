@@ -90,3 +90,50 @@ data_json = {
 
 print(requests.post(url_11, json=data_json).json())
 print(requests.post(url_11, data=json.dumps(data_json)))
+
+# 带参数的post
+params = {"key1": "params1", "key2": "params2"}
+print(requests.post(url_11, params=params).text)
+
+# 普通文件上传
+files = {
+    'file': open('test.txt', 'rb')
+}
+print(requests.post(url_11, files=files))
+
+# 定制化文件上传
+files_rename = {
+    'file': ('my_test.png', open('test.png', 'rb'), 'image/png')
+}
+print(requests.post(url_11, files=files_rename).text)
+
+# 多文件上传
+files_onemore = {
+    ('file1', ('test1.txt', open('test1.txt', 'rb')))
+    ('file2', ('test2.txt', open('test2.txt', 'rb')))
+}
+print(requests.post(url_11, files=files_onemore).text)
+
+# 流式上传
+with open('test.txt') as f:
+    print(requests.post(url_11, data=f).text)
+
+# 获取cookie
+url_c = "https://www.baidu.com/"
+r_c = requests.get(url_c)
+# 将RequestsCookiesJar转换成字典
+ck = requests.utils.dict_from_cookiejar(r_c.cookies)
+print(r_c.cookies)
+print(ck)
+for a in r_c.cookies:
+    print(a.name, a.value)
+
+# 发送cookie到服务器
+# cookies = {"aaa":"bbb"}        # 简单的定义cookies并发送
+# 复杂方式发送
+s = requests.session()
+ck.set('ck-name', 'ck-value', path='/path/cookies', domain='.test.com')
+s.cookies.update(ck)
+
+# Session
+# 保持会话同步
