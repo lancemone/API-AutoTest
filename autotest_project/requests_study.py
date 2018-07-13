@@ -45,8 +45,8 @@ print(type(r.text))
 print(r.text)
 
 host = "http://httpbin.org/"
-endpoint = "get"
-url_01 = ''.join([host, endpoint])
+endpoint_g = "get"
+url_01 = ''.join([host, endpoint_g])
 r_01 = requests.get(url_01)
 response = r_01.json()
 print(response)
@@ -70,8 +70,8 @@ r_04 = requests.get(url=url_01, headers=header, params=params)
 # post方法
 
 # 带数据的post
-endpoint2 = "post"
-url_11 = ''.join([host, endpoint2])
+endpoint_p = "post"
+url_11 = ''.join([host, endpoint_p])
 datas = {'key1': 'value1', 'key2': 'value2'}
 print(requests.post(url_11, data=datas).text)
 
@@ -131,9 +131,48 @@ for a in r_c.cookies:
 # 发送cookie到服务器
 # cookies = {"aaa":"bbb"}        # 简单的定义cookies并发送
 # 复杂方式发送
-s = requests.session()
+s = requests.session()  # s = requests.session()
 ck.set('ck-name', 'ck-value', path='/path/cookies', domain='.test.com')
 s.cookies.update(ck)
 
 # Session
 # 保持会话同步
+endpoint_ck = "cookies"
+url_s = ''.join([host, endpoint_ck])
+url_s01 = 'http://httpbin.org/cookies/set/sessioncookie/123456789'
+print(requests.get(url_s).text)
+s.get(url_s01)  # cookies信息存在session中
+print(s.get(url_s).text)
+
+# 保存会话信息
+endpoint_h = "headers"
+url_h = ''.join([host, endpoint_h])
+header1 = {"test1": "AAA"}
+header2 = {"test2": "BBB"}
+s.headers.update(header1)  # 已经存在于服务器中的信息
+print(s.get(url_h, headers=header2).text)  # 发送新的信息
+
+# 删除已存在的会话信息保存为None
+s.headers['test1'] = None
+print(s.get(url_h, headers=header2).text)
+
+# 提供默认数据
+s.auth = ('user', 'pass')
+s.headers.update({'x-test': 'true'})
+print(s.get('http://httpbin.org/headers', headers={'x-test2': 'true'}).text)  # both 'x-test' and 'x-test2' are sent
+
+# 认证
+# 基本认证
+url_au = "http://httpbin.org/basic-auth/user/passwd"
+print("未提供用户名和密码：" + str(requests.get(url_au).status_code))
+print("提供用户名和密码：" + str(requests.get(url_au, auth=('user', 'passwd')).status_code))
+# 数字认证
+from requests.auth import HTTPDigestAuth
+
+url_au1 = "http://httpbin.org/digest-auth/auth/user/pass"
+print(requests.get(url_au1, auth=HTTPDigestAuth('user', 'pass')).status_code)
+# OAuth认证   http://docs.python-requests.org/en/master/user/authentication/
+
+# 超时配置
+r = requests.get(my_url, timeout=5)  # 利用timeout参数来配置最大请求时间
+r = requests.get(my_url, timeout=None)  # 设置timeout=None，告诉请求永远等待响应，而不将请求作为超时值传递
