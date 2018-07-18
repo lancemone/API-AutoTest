@@ -8,7 +8,7 @@
 
 import requests
 import json
-import urllib3
+import urllib.request
 
 
 # 进入portal页并获取用户的user_token
@@ -38,12 +38,32 @@ class LoginIn(object):
             "$page_size": 50
         }
         url = ''.join([LoginIn.host, path])
-        r = requests.get(url=url, params=params)
-        response = requests.
-        data = json.load(response.read())
-        print(data['area_number'])
-        # return data['area_number']
+        req = requests.get(url=url, params=params, headers=LoginIn.header_request)
+        response = req.json()
+        self.area_number = response.get('items')[0].get('area_number')  # 获取第一个租户id
+        self.unique_code = response.get('items')[0].get('unique_code')  # 获取租户id
+        return {'area_number': self.area_number, 'unique_code': self.unique_code}
+
+    # 获取登录token
+    def get_login_token(self):
+        self.get_area_number()
+        path = "oauth/v1/sign_in"
+        data = {
+            'tenant_id': self.get_area_number().get('unique_code'),
+            'username': self.name,
+            'password': self.passwd
+        }
+        url = ''.join([LoginIn.host, path])
+        req = requests.post(url=url, headers=LoginIn.header_request, data=data)
+        login_token = req.headers['X-User-Token']
+
+
+
+
+
+
+
 
 
 mommmm = LoginIn(16811011103, 111111)
-mommmm.get_area_number()
+print(mommmm.get_login_token())
