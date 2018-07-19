@@ -58,12 +58,5 @@ class LoginIn(object):
         login_token = req.headers['X-User-Token']
 
 
-
-
-
-
-
-
-
 mommmm = LoginIn(16811011103, 111111)
 print(mommmm.get_login_token())
