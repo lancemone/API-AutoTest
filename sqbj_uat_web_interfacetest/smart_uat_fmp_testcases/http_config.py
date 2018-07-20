@@ -22,7 +22,7 @@ header_get = config.header_get
 def get(path, header, params):
     url = ''.join([host, path])
     try:
-        r = requests.get(url=url, headers=header, params=params, timeout=float(timeout))
+        r = requests.get(url=url, headers=header, timeout=float(timeout))
         req_header = r.headers
         req_json = r.json()
         req_text = r.text
@@ -30,19 +30,21 @@ def get(path, header, params):
         req_cookie = r.cookies
         req_raise_for_status = r.raise_for_status()
         req_ok = r.ok
-        return [req_header, req_json, req_cookie, req_ok, req_raise_for_status, req_status_code, req_text]
+        return {"req_header": req_header, "req_json": req_json, "req_cookie": req_cookie, "req_ok": req_ok, \
+                "req_raise_for_status": req_raise_for_status, "req_status_code": req_status_code, "req_text": req_text}
     except TimeoutError:
         logging.info("Time out!")
         return None
 
 
-def post(path, header, params, data):
+def post(path, header, data):
     url = ''.join([host, path])
     try:
-        r = requests.post(url=url, headers=header, params=params, data=data, timeout=float(timeout))
+        r = requests.post(url=url, headers=header, data=data, timeout=float(timeout))
         req_text = r.text
         req_header = r.headers
-        return [req_text, req_header]
+        req_status_code = r.status_code
+        return {"req_text": req_text, "req_headers": req_header, "req_status_code": req_status_code}
     except TimeoutError:
         logging.info("Time out!")
         return None

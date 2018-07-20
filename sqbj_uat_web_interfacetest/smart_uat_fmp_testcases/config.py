@@ -33,7 +33,7 @@ header_get = {
 header_post = {
     "Accept": "application/json, text/plain, */*",
     "Accept-Encoding": "gzip, deflate",
-    "Content-Length": 79,
+    "Content-Length": "79",
     "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
     "Cache-Control": "no-cache",
     "Proxy-Connection": "keep-alive",

@@ -34,11 +34,16 @@ class Test_Add_Devices(unittest.TestCase):
             'username': self.username,
             'password': self.password
         }
-        self.req = http_config.post(path=path, header=self.headers_post, params=None, data=data)
-        self.user_token = self.req.get('req_header').get('X-User-Token')
-        self.assertEqual(self.req.get('req_status_code'), 200)
-        self.assertIn("Set-Cookie", self.req)
-        self.assertIn("user_token=", self.req.get('Set-Cookie'))
+        req = http_config.post(path=path, header=self.headers_post, data=data)
+        user_token = req.get('req_headers').get('X-User-Token')
+        status_code = int(req.get('req_status_code'))
+        self.assertEqual(status_code, 200)
+        self.assertIn("Set-Cookie", str(req))
+        self.assertIn("user_token=", req.get('req_headers').get('Set-Cookie'))
+        return user_token
+
+    def tearDown(self):
+        pass
 
 
 if __name__ == '__main__':
