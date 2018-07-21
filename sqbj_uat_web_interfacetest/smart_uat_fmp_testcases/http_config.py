@@ -5,11 +5,12 @@
 # @Site    : 
 # @File    : http_config.py
 # @Software: PyCharm
-
+from json import JSONDecodeError
 
 import requests
 from sqbj_uat_web_interfacetest.smart_uat_fmp_testcases import config
 import logging
+import json
 
 # 测试用例的http配置
 
@@ -24,7 +25,11 @@ def get(path, header, params):
     try:
         r = requests.get(url=url, headers=header, timeout=float(timeout))
         req_header = r.headers
-        req_json = r.json()
+        try:
+            r.json()
+        except JSONDecodeError:
+            r.json = {}
+        req_json = r.json
         req_text = r.text
         req_status_code = int(r.status_code)
         req_cookie = r.cookies

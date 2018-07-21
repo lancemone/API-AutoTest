@@ -13,7 +13,7 @@ tsp_client_id = "51e929909c3511e7a795b264e03878af"  # 客服工单
 egs_client_id = "d0584301baa26e84251ee737314f02fa"  # 门禁管理
 bpp_client_id = "da3e88f7c2a9bcb505adab121de8f51e"  # 物业收费
 fmp_client_id = "aa0b01ce58a0420c8801f84c89f1c68d"  # 设备设施
-pbp_cilent_id = "566ff8db02e08b29cf491efb4914ea37"  # 社区党建
+pbp_client_id = "566ff8db02e08b29cf491efb4914ea37"  # 社区党建
 gsp_client_id = "447785b30ab6d22284881ba318627685"  # 社区政务
 tenant_id = "7e04d72e14f827e77fe7dac3e70b5183"
 unique_id = "501f380a64c925e2c8a6ab0db1cb0413"
@@ -23,6 +23,7 @@ serial_number = "1613100053"
 
 # HEADER
 header_get = {
+    "Content-Type": "application/x-www-form-urlencoded",
     "Accept": "application/json, text/plain, */*",
     "Accept-Encoding": "gzip, deflate",
     "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",

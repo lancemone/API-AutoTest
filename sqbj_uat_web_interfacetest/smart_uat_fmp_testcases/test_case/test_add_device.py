@@ -22,7 +22,7 @@ class Test_Add_Devices(unittest.TestCase):
         self.host = config.host_url
         self.headers_post = config.header_post
         self.headers_get = config.header_get
-        self.fmp_client = config.fmp_client_id
+        self.fmp_client_id = config.fmp_client_id
         self.username = config.username
         self.password = config.password
         self.tenant_id = config.tenant_id
@@ -41,6 +41,32 @@ class Test_Add_Devices(unittest.TestCase):
         self.assertIn("Set-Cookie", str(req))
         self.assertIn("user_token=", req.get('req_headers').get('Set-Cookie'))
         return user_token
+
+    def test_get_authorize(self):
+        path = "/oauth/v1/authorize"
+        params = {
+            "response_type": "token",
+            "redirect_uri": "http://smart.uat.sqbj.com/fmp/#!/facility-ledger/list",
+            "state": "123",
+            "client_id": self.fmp_client_id
+        }
+        self.headers_get['Cookie'] = 'user_token=' + self.test_login_portal()
+        print(self.headers_get)
+        req = http_config.get(path=path, header=self.headers_get, params=params)
+        print(req)
+        # cookie = str(req.get('req_header').get('Cookie'))
+        # print(cookie)
+        # status_code = int(req.get('req_status_code'))
+        # self.assertEqual(status_code, 302)
+
+
+
+
+
+
+
+
+
 
     def tearDown(self):
         pass
