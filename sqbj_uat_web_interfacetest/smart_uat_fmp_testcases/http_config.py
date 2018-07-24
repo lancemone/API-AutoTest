@@ -39,7 +39,7 @@ def get(path, header, params):
                 "req_raise_for_status": req_raise_for_status, "req_status_code": req_status_code, "req_text": req_text}
     except TimeoutError:
         logging.info("Time out!")
-        return None
+        return {}
 
 
 def post(path, header, data):
@@ -52,4 +52,4 @@ def post(path, header, data):
         return {"req_text": req_text, "req_headers": req_header, "req_status_code": req_status_code}
     except TimeoutError:
         logging.info("Time out!")
-        return None
+        return {}

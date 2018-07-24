@@ -22,7 +22,7 @@ fmp_client_id = "aa0b01ce58a0420c8801f84c89f1c68d"  # 设备设施
 pbp_client_id = "566ff8db02e08b29cf491efb4914ea37"  # 社区党建
 gsp_client_id = "447785b30ab6d22284881ba318627685"  # 社区政务
 tenant_id = "7e04d72e14f827e77fe7dac3e70b5183"
-username = "16811011103"
+username = "16811011102"
 password = "111111"
 serial_number = "1613100053"
 
@@ -44,7 +44,10 @@ header_post = {
     "app_id": "prop-pro-android",
     "client_id": "7567436B853D65E7385A98066CCE5504",
     "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 8.0.0; SM-G9500 Build/R16NW)",
-    "connect-type": "application/x-www-form-urlencoded"
+    "connect-type": "application/x-www-form-urlencoded",
+    "content-length": "275",
+    "accept-encoding": "gzip"
+
 }
 
 # EMAIL

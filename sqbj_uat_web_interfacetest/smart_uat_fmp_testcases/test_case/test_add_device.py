@@ -54,19 +54,6 @@ class Test_Add_Devices(unittest.TestCase):
         print(self.headers_get)
         req = http_config.get(path=path, header=self.headers_get, params=params)
         print(req)
-        # cookie = str(req.get('req_header').get('Cookie'))
-        # print(cookie)
-        # status_code = int(req.get('req_status_code'))
-        # self.assertEqual(status_code, 302)
-
-
-
-
-
-
-
-
-
 
     def tearDown(self):
         pass
