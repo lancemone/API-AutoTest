@@ -10,7 +10,7 @@
 # 参数配置
 
 # HTTP
-host = "https://smart.uat.sqbj.com/"
+host = "https://smart.uat.sqbj.com"
 timeout = 10
 
 # PARAMS
