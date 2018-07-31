@@ -22,6 +22,9 @@ class TestGetToken(unittest.TestCase):
         self.tenant_id = str(config.tenant_id)
         self.username = config.username
         self.password = config.password
+
+    @classmethod
+    def setUpClass(cls):
         logging.captureWarnings(True)  # 关闭证书验证警告
 
     def test_get_tennant_id(self):
@@ -36,10 +39,10 @@ class TestGetToken(unittest.TestCase):
         req = requests.get(url=url, headers=self.header_get, params=params, verify=False)
         req_json = req.json()
         unique_code = req_json.get('items')[0].get('unique_code')
-        print(unique_code)
+        # print(unique_code)
         tenant_id = config.tenant_id
         self.assertEqual(int(req.status_code), 200, msg="状态码为%s" % req.status_code)
-        # self.assertTrue(tenant_id == unique_code, msg="错误")
+        self.assertEqual(tenant_id, unique_code, msg="错误")
         # self.assertEqual("7e04d72e14f827e77fe7dac3e70b5183", unique_code, msg="错误")
 
 
