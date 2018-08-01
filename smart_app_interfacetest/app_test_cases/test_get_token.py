@@ -11,6 +11,7 @@ import requests
 import logging
 import unittest
 import json
+from smart_app_interfacetest.lib import HTMLTestRunner
 from smart_app_interfacetest import config
 from smart_app_interfacetest import https_config
 
@@ -37,13 +38,36 @@ class TestGetToken(unittest.TestCase):
         }
         url = https_config.set_url(path=path)
         req = requests.get(url=url, headers=self.header_get, params=params, verify=False)
-        req_json = req.json()
-        unique_code = req_json.get('items')[0].get('unique_code')
-        # print(unique_code)
-        tenant_id = config.tenant_id
+        req_json = json.loads(req.text)
+        items = req_json['items']
         self.assertEqual(int(req.status_code), 200, msg="状态码为%s" % req.status_code)
-        self.assertEqual(tenant_id, unique_code, msg="错误")
-        # self.assertEqual("7e04d72e14f827e77fe7dac3e70b5183", unique_code, msg="错误")
+        self.assertEqual(items[1]['unique_code'], self.tenant_id, msg="错误")
+
+    def test_get_user_token(self):
+        path = '/oauth/v1/devices'
+        url = https_config.set_url(path=path)
+        headers = {
+            "content-type": "application/x-www-form-urlencoded",
+            "user-agent": "okhttp/3.8.0"
+        }
+        data = {
+            "device_id": None,
+            "tenant_id": self.tenant_id,
+            "username": self.username,
+            "password": self.password,
+            "trusted": "true",
+            "setting": "%7B%22jpush%22%3A%7B%22registration_id%22%3A%22160a3797c80f5e50e6c%22%7D%7D"
+        }
+        req = requests.patch(url=url, headers=headers, data=data, verify=False)
+        req_json = req.json()
+        user_token = req.headers['x-user-token']
+        self.assertEqual(req.status_code, 200)
+        self.assertIsNotNone(req_json['device_id'])
+        self.assertIsNotNone(req_json['secret_key'])
+        return user_token
+
+
+
 
 
 

@@ -51,10 +51,11 @@ header_post = {
 }
 
 # EMAIL
+smtp_server = "smtp.mxhichina.com"
 mail_host = "mail.sqbj.com"
 mail_user = "motao@sqbj.com"
 mail_pass = "mo95tao95"
-mail_port = ""
+mail_port = "465"
 sender = "motao@sqbj.com"
 receiver = "lancemone@gmail.com/chendn@sqbj.com"
 subject = "Interface Test Report"
