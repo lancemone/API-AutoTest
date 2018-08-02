@@ -10,6 +10,7 @@
 import time
 import os
 from smart_app_interfacetest.lib.HTMLTestRunner import HTMLTestRunner
+from smart_app_interfacetest.lib import SendEmail
 import unittest
 
 # 指定测试用例的目录
@@ -36,11 +37,18 @@ def creat_suite():
 alltestnames = creat_suite()
 
 if __name__ == "__main__":
-    now = time.strftime("%Y-%m-%d %H_%M_%S")
-    # os.chdir(report_dir)
+    now = time.strftime("%Y-%m-%d %H:%M:%S")
+    os.chdir(report_dir)
     filename = report_dir + '/report_' + now + '_result.html'
     fp = open(filename, 'wb')
-    runner = HTMLTestRunner(stream=fp, title='Smart Interface Test Report',
-                            description='接口测试执行结果 ', verbosity=1)
+    runner = HTMLTestRunner(stream=fp, title=u'Smart Interface Test Report',
+                            description=u'接口测试执行结果 ', verbosity=1)
+    # 执行测试用例
     runner.run(alltestnames)
     fp.close()
+    print('Test Finished')
+
+    # 搜索最新测试报告
+    # file_new = SendEmail.new_report(report_dir)
+    # 发送邮件
+    # SendEmail.send_file(file_new)

@@ -66,11 +66,6 @@ class TestGetToken(unittest.TestCase):
         self.assertIsNotNone(req_json['secret_key'])
         return user_token
 
-
-
-
-
-
     def tearDown(self):
         pass
 
