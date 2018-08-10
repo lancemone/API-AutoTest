@@ -9,7 +9,6 @@
 # 邮件发送模板
 
 import smtplib
-import unittest
 import time
 import os
 from email.mime.application import MIMEApplication
@@ -17,7 +16,6 @@ from email.utils import parseaddr, formataddr
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
-from smart_app_interfacetest.lib.HTMLTestRunner import HTMLTestRunner
 from smart_app_interfacetest import config
 
 

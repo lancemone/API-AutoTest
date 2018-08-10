@@ -52,13 +52,11 @@ header_post = {
 
 # EMAIL
 smtp_server = "smtp.mxhichina.com"
-mail_host = "mail.sqbj.com"
 mail_user = "motao@sqbj.com"
 mail_pass = "MO950223tao"
 mail_port = 465
 sender = "motao@sqbj.com"
 receiver = ["motao0011@gmail.com", "chendn@sqbj.com"]  # 收件人列表
 subject = "Interface Test Report"
-content = "All interface test has been complited\nplease read the report file about the detile of result in the attachment"
 testuser = "MOTAO"
 on_off = "off"

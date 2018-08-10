@@ -42,6 +42,7 @@ class TestGetToken(unittest.TestCase):
         items = req_json['items']
         self.assertEqual(int(req.status_code), 200, msg="状态码为%s" % req.status_code)
         self.assertEqual(items[1]['unique_code'], self.tenant_id, msg="错误")
+        print('test_get_tennant_id pass')
 
     def test_get_user_token(self):
         path = '/oauth/v1/devices'
@@ -62,9 +63,11 @@ class TestGetToken(unittest.TestCase):
         req_json = req.json()
         user_token = req.headers['x-user-token']
         self.assertEqual(req.status_code, 200)
-        self.assertIsNotNone(req_json['device_id'])
-        self.assertIsNotNone(req_json['secret_key'])
-        return user_token
+        self.assertIn("device_id", req_json)
+        self.assertIn('secret_key', req_json)
+        self.assertIsNotNone(user_token)
+        print('test_get_user_token pass')
+        return req_json
 
     def tearDown(self):
         pass
