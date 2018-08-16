@@ -17,7 +17,7 @@ import unittest
 test_suite_dir = './app_test_cases'
 
 # 指定用例结果报告目录
-report_dir = '/Users/taomo/PycharmProjects/AutoTest/smart_app_interfacetest/TestReport'
+report_dir = '/Users/taomo/PycharmProjects/AutoTest/smart_app_interfacetest/TestReport/HtmlReport'
 
 
 def creat_suite():
