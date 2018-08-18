@@ -12,29 +12,23 @@ import smtplib
 import time
 import os
 from email.mime.application import MIMEApplication
-from email.utils import parseaddr, formataddr
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
-from smart_app_interfacetest import config
+from smart_app_interfacetest.config.read_conf import Read_conf
+from smart_app_interfacetest.lib import LogOut
 
-
-def _format_addr(s):
-    name, addr = parseaddr(s)
-    return formataddr((
-        Header(name, 'utf-8').encode(),
-        addr.encode('utf-8') if isinstance(addr, ) else addr))
-
-
+config = Read_conf()
+log = LogOut.MyLog().get_log()
+logger = LogOut.Log().get_logger()
 # ================定义发送邮件附件=================
 def send_file(file_new):
-    smtpserver = config.smtp_server
-    username = config.sender
-    password = config.mail_pass
-    sender = config.sender
-    receiver = config.receiver
-    print(receiver)
-    port = config.mail_port
+    smtpserver = config.get_email("smtp_server")
+    username = config.get_email("sender")
+    password = config.get_email("mail_pass")
+    sender = config.get_email("sender")
+    receiver = config.get_email("receiver")
+    port = config.get_email("mail_port")
     # subject = '**自动化测试报告'
     file = open(file_new, 'r', encoding='UTF-8').read()
     now = time.strftime("%Y-%m-%d %H_%M_%S")
@@ -61,9 +55,9 @@ def send_file(file_new):
         smtp.login(username, password)
         smtp.sendmail(sender, receiver, msgRoot.as_string())
         smtp.quit()
-        print('Mail Send Successful')
+        logger.info('Mail Send Successful')
     except smtplib.SMTPException:
-        print('Mail Send Fail')
+        logger.info('Mail Send Fail')
 
 
 # ======查找测试目录，找到最新生成的测试报告文件======
@@ -72,5 +66,5 @@ def new_report(test_report):
     lists.sort(key=lambda fn: os.path.getmtime(test_report + "/" + fn))  # linux
     # lists.sort(key=lambda fn: os.path.getmtime(test_report+"\\"+fn))    # 按时间排序win
     file_new = os.path.join(test_report, lists[-1])  # 获取最新的report文件
-    print(file_new)
+    logger.info(file_new)
     return file_new
