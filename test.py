@@ -1,15 +1,26 @@
-from smart_app_interfacetest.config.read_conf import Read_conf
-from smart_app_interfacetest.lib.LogOut import MyLog
-from smart_app_interfacetest.lib.LogOut import Log
-from smart_app_interfacetest.lib import LogOut
+from smart_app_interfacetest.lib.api_module import Api_module as api
+import json
+import requests
+import logging
 
-config = Read_conf()
-log = MyLog.get_log()
-logger = Log().get_logger()
-smtpserver = config.get_email("smtp_server")
-username = config.get_email("sender")
-password = config.get_email("mail_pass")
-sender = config.get_email("sender")
-receiver = config.get_email("receiver")
-port = config.get_email("mail_port")
-logger.log(smtpserver, username, password, sender, receiver, port)
+logging.captureWarnings(True)
+
+url = "https://smart.uat2.sqbj.com/api/basic/json-rpc/views"
+header = api().set_header()
+json_data = {
+    "id": 1,
+    "jsonrpc": "2.0",
+    "method": "common_getTenantByUsername",
+    "params": ["16811011109"]
+}
+data = json.dumps(json_data)
+code = api().https_post(url=url, header=header, json=json_data, value_name="json")
+r = api().https_post(url=url, header=header, json=data, value_name="json")
+re = r.get("result")
+# te = re[0].get("tenantId")
+print(type(json_data))
+print(type(data))
+print(code)
+# print(r)
+rr = requests.post(url=url, json=data, headers=header, verify=False)
+print(rr.json())
