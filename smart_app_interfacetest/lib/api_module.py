@@ -10,6 +10,7 @@
 import requests
 import urllib3
 import os
+import json
 from smart_app_interfacetest.config import read_conf
 from smart_app_interfacetest.lib.LogOut import MyLog as Log
 
@@ -39,7 +40,7 @@ class Api_module:
         :param path:
         :return:
         '''
-        self.url = ''.join(self.host, path)
+        self.url = ''.join([host, path])
         return self.url
 
     def set_header(self, name=None, value=None):
@@ -87,7 +88,7 @@ class Api_module:
         :return:
         '''
         try:
-            r = requests.get(url=url, heders=headers, verify=self.verify, timeout=self.timeout)
+            r = requests.get(url=url, heders=headers, verify=self.verify, timeout=timeout)
             if value_name is "status_code":
                 return r.status_code
             if value_name is "json":
@@ -100,7 +101,7 @@ class Api_module:
             self.logger.error("Time Out!")
             return None
 
-    def https_post(self, url, header, json, value_name, files=[]):
+    def https_post(self, url, header, data=None, value_name=None, params=None, files=[]):
         '''
 
         :param url:
@@ -112,7 +113,8 @@ class Api_module:
         '''
         if files is [] or None:
             try:
-                r = requests.post(url=url, headers=header, json=json, verify=self.verify, timeout=timeout)
+                r = requests.post(url=url, headers=header, data=data, params=params, verify=self.verify,
+                                  timeout=timeout)
                 if value_name is "status_code":
                     return r.status_code
                 if value_name is "json":
@@ -121,12 +123,15 @@ class Api_module:
                     return r.headers
                 if value_name is "raise":
                     return r.raise_for_status()
+                if value_name is "cookie":
+                    return r.cookies
             except TimeoutError:
                 self.logger.error("Time Out!")
                 return None
         else:
             try:
-                r = requests.post(url=url, headers=header, json=json, files=files, verify=self.verify, timeout=timeout)
+                r = requests.post(url=url, headers=header, data=data, files=files, params=params, verify=self.verify,
+                                  timeout=timeout)
                 if value_name is "status_code":
                     return r.status_code
                 if value_name is "json":
@@ -135,6 +140,54 @@ class Api_module:
                     return r.headers
                 if value_name is "raise":
                     return r.raise_for_status()
+                if value_name is "cookie":
+                    return r.cookies
+            except TimeoutError:
+                self.logger.error("Time Out!")
+                return None
+
+    def https_json_post(self, url, header, data, value_name=None, params=None, files=[]):
+        '''
+
+        :param url:
+        :param header:
+        :param jsons:
+        :param value_name:
+        :param params:
+        :param files:
+        :return:
+        '''
+        if files is [] or None:
+            try:
+                r = requests.post(url=url, headers=header, json=data, params=params, verify=self.verify,
+                                  timeout=timeout)
+                if value_name is "status_code":
+                    return r.status_code
+                if value_name is "json":
+                    return r.json()
+                if value_name is "header":
+                    return r.headers
+                if value_name is "raise":
+                    return r.raise_for_status()
+                if value_name is "cookie":
+                    return r.cookies
+            except TimeoutError:
+                self.logger.error("Time Out!")
+                return None
+        else:
+            try:
+                r = requests.post(url=url, headers=header, json=data, files=files, params=params, verify=self.verify,
+                                  timeout=timeout)
+                if value_name is "status_code":
+                    return r.status_code
+                if value_name is "json":
+                    return r.json()
+                if value_name is "header":
+                    return r.headers
+                if value_name is "raise":
+                    return r.raise_for_status()
+                if value_name is "cookie":
+                    return r.cookies
             except TimeoutError:
                 self.logger.error("Time Out!")
                 return None

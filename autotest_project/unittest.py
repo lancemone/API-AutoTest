@@ -112,9 +112,32 @@ import unittest
 # 定义测试类，继承自unittest.TestCase类
 # 可继承unittest.TestCase的方法，如setUp和tearDown方法，不过此方法可以在子类重写，覆盖父类方法。
 # 可继承unittest.TestCase的各种断言方法。
+# 整个文件的开始和结束执行
+def setUpModule():
+    print("test module start >>>>>>>>>>>>>>")
+
+
+def tearDownModule():
+    print("test module end >>>>>>>>>>>>>>")
+
 class Testcase_one(unittest.TestCase):
+
+    # 整个Test类的开始和结束执行
+    @classmethod
+    def setUpClass(cls):
+        print("test class start =======>")
+
+    @classmethod
+    def tearDownClass(cls):
+        print("test class end =======>")
+
+    # 每个用例的开始和结束执行
     def setUp(self):  # 环境配置
         print('/ncases before')
+        pass
+
+    def tearDown(self):
+        print('case after')
         pass
 
     def test_case_add(self):  # 定义测试用例
@@ -128,10 +151,6 @@ class Testcase_one(unittest.TestCase):
         a = 10 - 5
         b = 4
         self.assertEqual(a, b, msg='a not euqal b')
-
-    def tearDown(self):
-        print('case after')
-        pass
 
 
 # 执行测试用例

@@ -1,26 +1,29 @@
-from smart_app_interfacetest.lib.api_module import Api_module as api
-import json
+from smart_app_interfacetest.lib import api_module
+from smart_app_interfacetest.config import read_conf
 import requests
 import logging
 
-logging.captureWarnings(True)
 
-url = "https://smart.uat2.sqbj.com/api/basic/json-rpc/views"
-header = api().set_header()
-json_data = {
+logging.captureWarnings(True)
+conf = read_conf.Read_conf()
+api = api_module.Api_module()
+tenantid = "f40ccb4caad440170ea378adc184d775"
+path = "/api/basic/json-rpc/views"
+url = api.set_url(path)
+header = api.set_header()
+# header["content-type"] = "application/x-www-form-urlencoded"
+print(header)
+params = {
+    "provider": "password",
+    "tenant_id": tenantid,
+    "username": conf.get_params("username"),
+    "password": conf.get_params("password")
+}
+data = {
     "id": 1,
     "jsonrpc": "2.0",
     "method": "common_getTenantByUsername",
     "params": ["16811011109"]
 }
-data = json.dumps(json_data)
-code = api().https_post(url=url, header=header, json=json_data, value_name="json")
-r = api().https_post(url=url, header=header, json=data, value_name="json")
-re = r.get("result")
-# te = re[0].get("tenantId")
-print(type(json_data))
-print(type(data))
-print(code)
-# print(r)
-rr = requests.post(url=url, json=data, headers=header, verify=False)
-print(rr.json())
+r = requests.post(url=url, headers=header, json=data, verify=False)
+print(r.json())
