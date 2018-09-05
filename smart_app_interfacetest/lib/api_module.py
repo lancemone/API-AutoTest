@@ -10,11 +10,15 @@
 import requests
 import urllib3
 import os
+import logging
 import json
 from smart_app_interfacetest.config import read_conf
-from smart_app_interfacetest.lib.LogOut import MyLog as Log
+
+# from smart_app_interfacetest.lib.LogOut import MyLog as Log
 
 conf = read_conf.Read_conf()
+logger = logging.getLogger(__name__)
+
 
 
 class Api_module:
@@ -31,8 +35,8 @@ class Api_module:
         }
         self.url = None
         self.verify = False
-        self.log = Log.get_log()
-        self.logger = self.log.get_logger()
+        # self.log = Log.get_log()
+        # self.logger = self.log.get_logger()
         self.files = {}
 
     def set_url(self, path):
@@ -74,7 +78,7 @@ class Api_module:
                         self.files[None] = ("file%s" % x, ("file%s.%s") % (x, os.path.splitext(file_i_path)),
                                             open(file_i_path, "rb"))
                 except:
-                    self.logger.error("读取文件出错!")
+                    logger.error("读取文件出错!")
                     raise
                 finally:
                     return self.files
@@ -88,8 +92,8 @@ class Api_module:
         :return:
         '''
         try:
-            r = requests.get(url=url, heders=headers, verify=self.verify, timeout=timeout)
-            if value_name is "status_code":
+            r = requests.get(url=url, headers=headers, verify=self.verify, timeout=timeout)
+            if value_name is "code":
                 return r.status_code
             if value_name is "json":
                 return r.json()
@@ -98,7 +102,7 @@ class Api_module:
             if value_name is "raise":
                 return r.raise_for_status()
         except TimeoutError:
-            self.logger.error("Time Out!")
+            logger.error("Time Out!")
             return None
 
     def https_post(self, url, header, data=None, value_name=None, params=None, files=[]):
@@ -115,7 +119,7 @@ class Api_module:
             try:
                 r = requests.post(url=url, headers=header, data=data, params=params, verify=self.verify,
                                   timeout=timeout)
-                if value_name is "status_code":
+                if value_name is "code":
                     return r.status_code
                 if value_name is "json":
                     return r.json()
@@ -126,13 +130,13 @@ class Api_module:
                 if value_name is "cookie":
                     return r.cookies
             except TimeoutError:
-                self.logger.error("Time Out!")
+                logger.error("Time Out!")
                 return None
         else:
             try:
                 r = requests.post(url=url, headers=header, data=data, files=files, params=params, verify=self.verify,
                                   timeout=timeout)
-                if value_name is "status_code":
+                if value_name is "code":
                     return r.status_code
                 if value_name is "json":
                     return r.json()
@@ -143,7 +147,7 @@ class Api_module:
                 if value_name is "cookie":
                     return r.cookies
             except TimeoutError:
-                self.logger.error("Time Out!")
+                logger.error("Time Out!")
                 return None
 
     def https_json_post(self, url, header, data, value_name=None, params=None, files=[]):
@@ -161,7 +165,7 @@ class Api_module:
             try:
                 r = requests.post(url=url, headers=header, json=data, params=params, verify=self.verify,
                                   timeout=timeout)
-                if value_name is "status_code":
+                if value_name is "code":
                     return r.status_code
                 if value_name is "json":
                     return r.json()
@@ -172,13 +176,13 @@ class Api_module:
                 if value_name is "cookie":
                     return r.cookies
             except TimeoutError:
-                self.logger.error("Time Out!")
+                logger.error("Time Out!")
                 return None
         else:
             try:
                 r = requests.post(url=url, headers=header, json=data, files=files, params=params, verify=self.verify,
                                   timeout=timeout)
-                if value_name is "status_code":
+                if value_name is "code":
                     return r.status_code
                 if value_name is "json":
                     return r.json()
@@ -189,5 +193,5 @@ class Api_module:
                 if value_name is "cookie":
                     return r.cookies
             except TimeoutError:
-                self.logger.error("Time Out!")
+                logger.error("Time Out!")
                 return None

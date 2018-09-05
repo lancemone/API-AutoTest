@@ -41,7 +41,7 @@ class Test_App_Login(unittest.TestCase):
 
     def tearDown(self):
         # time.sleep(1)
-        self.logger.info("%s test end" % sys._getframe().f_code.co_name)
+        self.logger.info("test end")
 
     def test_01_tenantid(self):
         '''
@@ -111,3 +111,7 @@ class Test_App_Login(unittest.TestCase):
         self.assertIsNotNone(response)
         self.assertIn("expires_in", response)
         self.conf.set_header(name="fmp_authorization", value=token_type + ' ' + access_token)
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -14,19 +14,18 @@ from smart_app_interfacetest.lib.HTMLTestRunner import HTMLTestRunner
 from smart_app_interfacetest.lib import SendEmail
 from smart_app_interfacetest.config import read_conf
 from smart_app_interfacetest.lib import api_module
-from smart_app_interfacetest.lib.LogOut import MyLog
-from smart_app_interfacetest.lib.LogOut import Log
+from smart_app_interfacetest.lib import log_conf
+
+logger = log_conf.logger
 
 
 class Run:
     def __init__(self):
-        global log, logger, report_dir, test_dir
+        global report_dir, test_dir
         # 指定用例结果报告目录
         report_dir = os.path.join(os.path.join(os.path.dirname(__file__), "TestReport"), "HtmlReport")
         # 指定测试用例的目录
         test_dir = os.path.join(os.path.join(os.path.dirname(__file__)), 'app_test_cases')
-        log = MyLog.get_log()
-        logger = log.get_logger()
         self.conf = read_conf.Read_conf()
         self.api = api_module.Api_module()
         self.on_off = self.conf.get_email("on_off")
@@ -56,20 +55,20 @@ class Run:
         self.set_caselist()
         test_suite = unittest.TestSuite()
         suite_module = []
-        # print(self.caseList)
         for case in self.caseList:
             case_name = case
             discover = unittest.defaultTestLoader.discover(start_dir=test_dir, pattern=case_name, top_level_dir=None)
-            # print(discover)
             suite_module.append(discover)
         if len(suite_module) > 0:
             for suite in suite_module:
                 for test_name in suite:
                     test_suite.addTests(test_name)
+                    logger.info(test_suite)
                     return test_suite
         else:
             return None
 
+    # 配置token
     def set_asscess_token(self):
         '''
         set_asscess_token
@@ -111,8 +110,10 @@ class Run:
         access_token = response["access_token"]
         self.conf.set_header(name="fmp_authorization", value=token_type + ' ' + access_token)
 
+    # 创建测试报告
     def run(self):
         '''
+
         run test
         :return:
         '''
@@ -122,8 +123,7 @@ class Run:
                 logger.info("<<<<<<<<<<<<<<<TEST START>>>>>>>>>>>>>>>")
                 now = time.strftime("%Y-%m-%d %H:%M:%S")
                 os.chdir(report_dir)
-                filename = report_dir + '/report_' + now + '_result.html'
-                print(filename)
+                filename = report_dir + '/report-' + now + '-result.html'
                 fp = open(filename, 'wb')
                 runner = HTMLTestRunner(stream=fp, title=u'Smart Interface Test Report',
                                         description=u'接口测试执行结果 ', verbosity=1)

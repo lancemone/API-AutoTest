@@ -1,29 +1,22 @@
-from smart_app_interfacetest.lib import api_module
-from smart_app_interfacetest.config import read_conf
-import requests
-import logging
+s = 'A small sample of texts from Project Gutenberg appears in the NLTK corpus collection. However, you may be interested in analyzing ' \
+    'other texts from Project Gutenberg. You can browse the catalog of 25,000 free online books at http :// www . gutenberg . org / catalog /, and ' \
+    'obtain a URL to an ASCII text file. Although 90% of the texts in Project Gutenberg are in English, it includes material in over 50 other ' \
+    'languages, including Catalan, Chinese, Dutch, Finnish, French, German, Italian'
 
 
-logging.captureWarnings(True)
-conf = read_conf.Read_conf()
-api = api_module.Api_module()
-tenantid = "f40ccb4caad440170ea378adc184d775"
-path = "/api/basic/json-rpc/views"
-url = api.set_url(path)
-header = api.set_header()
-# header["content-type"] = "application/x-www-form-urlencoded"
-print(header)
-params = {
-    "provider": "password",
-    "tenant_id": tenantid,
-    "username": conf.get_params("username"),
-    "password": conf.get_params("password")
-}
-data = {
-    "id": 1,
-    "jsonrpc": "2.0",
-    "method": "common_getTenantByUsername",
-    "params": ["16811011109"]
-}
-r = requests.post(url=url, headers=header, json=data, verify=False)
-print(r.json())
+def get_m(st):
+    s = str(st)
+    word = s.split(' ')
+    dic = {}
+    for key in word:
+        if key in dic.keys():
+            v = dic.get(key, 0)
+            v = v + 1
+            dic[key] = v
+        else:
+            dic[key] = 1
+    return sorted(dic.items(), key=lambda item: item[1])
+
+
+a = get_m(s)
+print(a)

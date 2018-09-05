@@ -16,11 +16,11 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from smart_app_interfacetest.config.read_conf import Read_conf
-from smart_app_interfacetest.lib import LogOut
+from smart_app_interfacetest.lib import log_conf
 
 config = Read_conf()
-log = LogOut.MyLog().get_log()
-logger = LogOut.Log().get_logger()
+logger = log_conf.logger
+
 # ================定义发送邮件附件=================
 def send_file(file_new):
     smtpserver = config.get_email("smtp_server")
