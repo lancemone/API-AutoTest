@@ -1,2 +1,2 @@
 # test_app_login.py
-test_get_devicelist.py
+# test_get_devicelist.py

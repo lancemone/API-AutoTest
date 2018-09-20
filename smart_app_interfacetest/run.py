@@ -108,6 +108,7 @@ class Run:
         response = self.api.https_post(url=url3, header=self.header, data=data3, value_name="json")
         token_type = response["token_type"]
         access_token = response["access_token"]
+        print(access_token)
         self.conf.set_header(name="fmp_authorization", value=token_type + ' ' + access_token)
 
     # 创建测试报告

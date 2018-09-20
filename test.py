@@ -1,22 +1,31 @@
-s = 'A small sample of texts from Project Gutenberg appears in the NLTK corpus collection. However, you may be interested in analyzing ' \
-    'other texts from Project Gutenberg. You can browse the catalog of 25,000 free online books at http :// www . gutenberg . org / catalog /, and ' \
-    'obtain a URL to an ASCII text file. Although 90% of the texts in Project Gutenberg are in English, it includes material in over 50 other ' \
-    'languages, including Catalan, Chinese, Dutch, Finnish, French, German, Italian'
+import requests
+
+# 员工姓名和密码
+username = 16811011102
+passwd = 111111
+# 鑫泰租户ID
+tenant_id = "772cbb220daaa39a148db3cdcfbdadac"
 
 
-def get_m(st):
-    s = str(st)
-    word = s.split(' ')
-    dic = {}
-    for key in word:
-        if key in dic.keys():
-            v = dic.get(key, 0)
-            v = v + 1
-            dic[key] = v
-        else:
-            dic[key] = 1
-    return sorted(dic.items(), key=lambda item: item[1])
+def get_token():
+    url = "http://smart.uat2.sqbj.com/oauth/v1/sign_in"
+    data = {
+        "tenant_id": tenant_id,
+        "username": username,
+        "password": passwd
+    }
+    r = requests.post(url=url, data=data)
+    userToken = r.headers["X-User-Token"]
+    url_token = "http://smart.uat2.sqbj.com/oauth/v1/token"
+    data_token = {
+        "grant_type": "user_token",
+        "user_token": userToken,
+        "client_id": "94509b599031542be74bc83ac835a361"
+    }
+    r_token = requests.post(url=url_token, data=data_token)
+    access_token = r_token.json()["token_type"] + ' ' + r_token.json()["access_token"]
+    return access_token
 
 
-a = get_m(s)
-print(a)
+token = get_token()
+print(token)
